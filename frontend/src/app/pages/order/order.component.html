@@ -1,0 +1,81 @@
+<section class="order-layout">
+  <div class="product-panel">
+    <div class="summary-card">
+      <span>Sản phẩm trong giỏ</span>
+      <strong>{{ cartLines().length }} món</strong>
+    </div>
+
+    @if (cartLines().length) {
+      <div class="product-list">
+        @for (line of cartLines(); track line.id) {
+          <article class="product-item">
+            <img [src]="line.imageUrl" [alt]="line.name" />
+            <div class="product-content">
+              <div>
+                <h3>{{ line.name }}</h3>
+                <p>{{ toCurrency(line.unitPrice) }}</p>
+              </div>
+              <div class="qty-controls">
+                <button type="button" (click)="decreaseQuantity(line.id)">-</button>
+                <span>{{ line.quantity }}</span>
+                <button type="button" (click)="increaseQuantity(line.id)">+</button>
+              </div>
+            </div>
+            <div class="item-meta">
+              <p class="line-total">{{ toCurrency(lineTotal(line.unitPrice, line.quantity)) }}</p>
+              <button type="button" class="remove-btn" (click)="removeItem(line.id)">Xóa</button>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="empty-cart">
+        <p>Giỏ hàng đang trống. Hãy quay lại trang chủ để thêm sản phẩm trước khi đặt hàng.</p>
+        <a routerLink="/">Quay lại trang chủ</a>
+      </div>
+    }
+  </div>
+
+  <div class="order-copy">
+    <p class="eyebrow">ĐẶT HÀNG</p>
+    <h1>Xác nhận thông tin giao nhận</h1>
+    <p>
+      Danh sách sản phẩm được lấy trực tiếp từ giỏ hàng của bạn. Vui lòng kiểm tra thông tin để gửi đơn.
+    </p>
+
+    <form [formGroup]="orderForm" (ngSubmit)="submitOrder()" class="order-form">
+      <label>
+        Họ và tên
+        <input formControlName="customerName" type="text" placeholder="Nguyễn Văn A" />
+      </label>
+      <label>
+        Số điện thoại
+        <input formControlName="customerPhone" type="text" placeholder="0900123456" />
+      </label>
+      <label>
+        Địa chỉ
+        <input formControlName="customerAddress" type="text" placeholder="123 Nguyễn Huệ, Quận 1" />
+      </label>
+      <label>
+        Ghi chú
+        <textarea formControlName="note" rows="3" placeholder="Ít đá, không đường"></textarea>
+      </label>
+
+      <div class="summary-row">
+        <span>Tổng tạm tính</span>
+        <strong>{{ toCurrency(cartTotal()) }}</strong>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="form-message error">{{ errorMessage() }}</p>
+      }
+      @if (successMessage()) {
+        <p class="form-message success">{{ successMessage() }}</p>
+      }
+
+      <button class="submit-btn" type="submit" [disabled]="isSubmitting() || !cartLines().length">
+        {{ isSubmitting() ? 'Đang gửi...' : 'Gửi đơn hàng' }}
+      </button>
+    </form>
+  </div>
+</section>

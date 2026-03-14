@@ -1,0 +1,33 @@
+<section class="login-shell">
+  <div class="login-card">
+    <aside class="login-intro">
+      <p class="eyebrow">ADMIN ACCESS</p>
+      <h1>Đăng nhập quản trị</h1>
+      <p>Sử dụng tài khoản seed từ file SQL để quản lý đơn hàng và nội dung trang chủ.</p>
+      <ul>
+        <li>Theo dõi trạng thái đơn nhanh hơn</li>
+        <li>Chỉnh nội dung banner và danh mục</li>
+        <li>Cập nhật trực tiếp không cần reload backend</li>
+      </ul>
+    </aside>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submit()" class="login-form">
+      <label>
+        Email
+        <input formControlName="email" type="email" />
+      </label>
+      <label>
+        Mật khẩu
+        <input formControlName="password" type="password" />
+      </label>
+
+      @if (errorMessage()) {
+        <p class="message error">{{ errorMessage() }}</p>
+      }
+
+      <button type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Đang đăng nhập...' : 'Đăng nhập' }}
+      </button>
+    </form>
+  </div>
+</section>

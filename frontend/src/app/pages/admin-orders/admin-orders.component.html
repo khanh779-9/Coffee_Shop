@@ -1,0 +1,52 @@
+<section class="orders-shell">
+  <div class="orders-head">
+    <div>
+      <p class="eyebrow">ADMIN DASHBOARD</p>
+      <h1>Đơn hàng đã nhận</h1>
+      <p>Xin chào {{ adminName()?.fullName }}. Dữ liệu được đọc trực tiếp từ MySQL.</p>
+    </div>
+    <div class="head-actions">
+      <a class="content-link" routerLink="/admin/content">Quản trị nội dung</a>
+      <button type="button" (click)="logout()">Đăng xuất</button>
+    </div>
+  </div>
+
+  @if (statusMessage()) {
+    <p class="message success">{{ statusMessage() }}</p>
+  }
+  @if (errorMessage()) {
+    <p class="message error">{{ errorMessage() }}</p>
+  }
+
+  <div class="orders-list">
+    @for (order of orders(); track order.id) {
+      <article class="order-card">
+        <div class="order-headline">
+          <div>
+            <h3>Đơn #{{ order.id }} • {{ order.customerName }}</h3>
+            <p>{{ order.customerPhone }} • {{ order.customerAddress || 'Chưa có địa chỉ' }}</p>
+          </div>
+          <div class="order-meta">
+            <select [value]="order.status" (change)="onStatusChange(order.id, $event)">
+              @for (status of orderStatuses; track status) {
+                <option [value]="status">{{ status }}</option>
+              }
+            </select>
+            <strong>{{ toCurrency(order.totalAmount) }}</strong>
+          </div>
+        </div>
+        <div class="order-items">
+          @for (item of parseItems(order.items); track item.productName + item.quantity) {
+            <div class="order-item-row">
+              <span>{{ item.productName }} x{{ item.quantity }}</span>
+              <span>{{ toCurrency(item.lineTotal) }}</span>
+            </div>
+          }
+        </div>
+        @if (order.note) {
+          <p class="order-note">Ghi chú: {{ order.note }}</p>
+        }
+      </article>
+    }
+  </div>
+</section>

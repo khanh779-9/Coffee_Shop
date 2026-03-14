@@ -1,0 +1,158 @@
+:host {
+  display: block;
+}
+
+.orders-shell {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.orders-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1.2rem;
+}
+
+.head-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.content-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.85rem 1.2rem;
+  background: #efe2d2;
+  color: #5a2d11;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.eyebrow {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7f5130;
+  font-size: 0.76rem;
+}
+
+.orders-head h1 {
+  margin: 0.3rem 0 0.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.orders-head button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.85rem 1.2rem;
+  background: #5a2d11;
+  color: #ffe9ce;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.message.success,
+.message.error {
+  margin: 0 0 1rem;
+  padding: 0.8rem 0.9rem;
+  border-radius: 14px;
+}
+
+.message.success {
+  background: #e8f5e8;
+  color: #1f6a31;
+}
+
+.message.error {
+  background: #fde7e0;
+  color: #8a2d0c;
+}
+
+.orders-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.order-card {
+  background: rgba(255, 248, 239, 0.9);
+  border: 1px solid rgba(109, 68, 32, 0.16);
+  border-radius: 24px;
+  padding: 1.2rem;
+  box-shadow: 0 20px 36px rgba(66, 36, 15, 0.12);
+}
+
+.order-headline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.order-headline h3,
+.order-headline p,
+.order-note {
+  margin: 0;
+}
+
+.order-meta {
+  text-align: right;
+  font-weight: 700;
+  color: #5a2d11;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.order-meta select {
+  border: 1px solid #d8b28b;
+  border-radius: 12px;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  background: #fffdf9;
+}
+
+.order-items {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.order-item-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(109, 68, 32, 0.12);
+}
+
+.order-note {
+  margin-top: 0.9rem;
+  color: #6b442b;
+}
+
+@media (max-width: 700px) {
+  .orders-head,
+  .order-headline,
+  .order-item-row {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .orders-shell {
+    width: calc(100% - 1.25rem);
+  }
+
+  .order-card {
+    padding: 1rem;
+    border-radius: 18px;
+  }
+
+  .order-meta {
+    text-align: left;
+  }
+}

@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: coffee-shop-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: coffeeshop_template_db
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./template_db/coffeeshop_template_db.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: coffee-shop-backend
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    env_file:
+      - ./backend/.env
+    environment:
+      DB_HOST: mysql
+      DB_PASSWORD: root
+      CORS_ORIGIN: http://localhost:4200
+    ports:
+      - '4000:4000'
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: coffee-shop-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    env_file:
+      - ./frontend/.env
+    environment:
+      NG_APP_API_BASE_URL: http://localhost:4000/api
+    ports:
+      - '4200:4200'
+
+volumes:
+  mysql-data:

@@ -1,0 +1,236 @@
+<div class="home" id="home-top">
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  @if (hero(); as h) {
+      <section
+        class="hero"
+        [style.background-image]="'url(' + h.backgroundImage + ')'"
+        
+      >
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <span class="hero-badge">{{ h.badge }}</span>
+          <h1 class="hero-title">{{ h.title }}</h1>
+          <p class="hero-desc">{{ h.description }}</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" routerLink="/order">{{ h.primaryAction }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+            <a class="btn btn-outline" href="#menu">{{ h.secondaryAction }}</a>
+          </div>
+        </div>
+        <div class="hero-stats" aria-hidden="true">
+          <div class="stat-item">
+            <div class="stat-value">15+</div>
+            <div class="stat-label">Loại hạt</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">10k+</div>
+            <div class="stat-label">Khách hàng</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4.9</div>
+            <div class="stat-label">Đánh giá</div>
+          </div>
+        </div>
+        <a class="scroll-hint" href="#features" aria-label="Cuộn xuống">
+          <span class="scroll-label">Khám phá</span>
+          <span class="scroll-arrow">↓</span>
+        </a>
+      </section>
+  }
+
+  <!-- ═══════════════════ FEATURES ═══════════════════ -->
+  <section class="features" id="features">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 21c6.5 0 10.5-4 14-14 0 0-8 1-12 5-3 3-2 9-2 9Z"></path>
+            <path d="M9 15c1.8-.6 3.4-2.2 4.2-4"></path>
+          </svg>
+        </div>
+        <h3>Hạt cà phê nguyên chất</h3>
+        <p>Tuyển chọn từ những vùng cao nguyên tốt nhất.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 10h11a4 4 0 0 1 0 8H8a4 4 0 0 1-4-4v-4Z"></path>
+            <path d="M15 12h3a2 2 0 0 1 0 4h-1"></path>
+            <path d="M7 6h7"></path>
+          </svg>
+        </div>
+        <h3>Pha chế thủ công</h3>
+        <p>Tỉ mỉ trong từng công đoạn để giữ trọn hương vị.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 11 12 4l9 7"></path>
+            <path d="M5 10v9h14v-9"></path>
+            <path d="M10 19v-5h4v5"></path>
+          </svg>
+        </div>
+        <h3>Không gian ấm cúng</h3>
+        <p>Nơi lý tưởng để làm việc và thư giãn cùng bạn bè.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ MENU ═══════════════════ -->
+  <section class="menu" id="menu">
+    <div class="menu-container">
+      <p class="section-label">OUR SELECTION</p>
+      <h2 class="section-title">Thực đơn đặc sắc</h2>
+      <p class="section-desc">
+        Mỗi tách cà phê là một câu chuyện về niềm đam mê và sự tận tâm của những nghệ nhân rang xay.
+      </p>
+
+      @if (menuErrorMessage()) {
+        <div class="menu-error" role="alert" aria-live="polite">
+          <p>{{ menuErrorMessage() }}</p>
+          <button type="button" class="menu-error-retry" (click)="retryMenuLoad()">Thử lại</button>
+        </div>
+      } @else {
+        <div class="menu-tabs">
+          @for (tab of menuTabs(); track tab.code) {
+            <button
+              class="tab-btn"
+              [class.active]="activeTab() === tab.code"
+              (click)="setActiveTab(tab.code)"
+              type="button"
+            >{{ tab.name }}</button>
+          }
+        </div>
+
+        <div class="drink-grid">
+          @for (drink of filteredDrinks(); track drink.id) {
+            <article class="drink-card">
+              <div class="card-img-wrap">
+                <img [src]="drink.imageUrl" [alt]="drink.name" loading="lazy" />
+                <span class="card-badge">{{ drink.categoryLabel }}</span>
+                <button type="button" class="card-favorite" aria-label="Yêu thích">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="card-rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-val">{{ drink.rating }}</span>
+                </div>
+                <h3>{{ drink.name }}</h3>
+                <p class="card-desc">{{ drink.description }}</p>
+                <div class="card-foot">
+                  <span class="card-price">Giá từ <strong>{{ toCurrency(drink.priceFrom) }}</strong></span>
+                  <button class="btn-order" type="button" (click)="addToCart(drink)" aria-label="Thêm {{ drink.name }} vào giỏ">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14"></path>
+                      <path d="M12 5v14"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-copy">
+        <p class="about-label">VỀ CHÚNG TÔI</p>
+        <h2>Coffee Shop - Hành trình từ đam mê đến từng tách cà phê</h2>
+        <p>
+          Chúng tôi bắt đầu từ niềm tin rằng một tách cà phê ngon có thể làm bừng sáng cả ngày dài.
+          Từ khâu chọn hạt, rang xay đến pha chế, mọi công đoạn đều được chăm chút để giữ trọn hương vị nguyên bản.
+        </p>
+      </div>
+      <div class="about-highlights">
+        <article>
+          <h3>Hạt Cà Phê Chọn Lọc</h3>
+          <p>Ưu tiên nguồn hạt chất lượng cao từ các vùng trồng nổi tiếng tại Việt Nam và quốc tế.</p>
+        </article>
+        <article>
+          <h3>Pha Chế Chuẩn Vị</h3>
+          <p>Đội ngũ barista giữ đúng tỷ lệ và kỹ thuật để mỗi ly đều đồng nhất chất lượng.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+      <div class="contact-card">
+        <h3>Liên hệ Coffee Shop</h3>
+        <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn trong mọi trải nghiệm đặt hàng và thưởng thức cà phê.</p>
+        <ul>
+          <li><strong>Hotline:</strong> 0900 123 456</li>
+          <li><strong>Email:</strong> hello@coffeeshop.vn</li>
+          <li><strong>Địa chỉ:</strong> 123 Nguyễn Huệ, Quận 1, TP.HCM</li>
+        </ul>
+      </div>
+      <div class="contact-card">
+        <h3>Giờ mở cửa</h3>
+        <ul>
+          <li>Thứ 2 - Thứ 6: 07:00 - 22:00</li>
+          <li>Thứ 7 - Chủ nhật: 07:00 - 23:00</li>
+        </ul>
+        <p>Theo dõi fanpage để cập nhật ưu đãi và món mới mỗi tuần.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="footer" id="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h2>Coffee Shop</h2>
+        <p>Nơi khởi đầu của những ý tưởng tuyệt vời và những cuộc trò chuyện thú vị bên tách cà phê nồng nàn.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>LIÊN KẾT</h4>
+        <ul>
+          <li><a routerLink="/">Trang chủ</a></li>
+          <li><a href="#menu">Thực đơn</a></li>
+          <li><a href="#">Về chúng tôi</a></li>
+          <li><a href="#">Tuyển dụng</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>HỖ TRỢ</h4>
+        <ul>
+          <li><a href="#">Câu hỏi thường gặp</a></li>
+          <li><a href="#">Chính sách bảo mật</a></li>
+          <li><a href="#">Điều khoản dịch vụ</a></li>
+          <li><a href="#">Liên hệ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>BẢN TIN</h4>
+        <p>Đăng ký để nhận những ưu đãi mới nhất từ chúng tôi.</p>
+        <form class="newsletter-form" (submit)="$event.preventDefault()">
+          <input type="email" placeholder="Email của bạn" aria-label="Email đăng ký" />
+          <button type="submit">Gửi</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Coffee Shop. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+</div>

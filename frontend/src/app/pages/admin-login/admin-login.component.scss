@@ -1,0 +1,125 @@
+:host {
+  display: block;
+}
+
+.login-shell {
+  width: min(980px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding-top: 90px;
+  padding-bottom: 1rem;
+}
+
+.login-card {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.2rem;
+  background: rgba(255, 248, 239, 0.9);
+  border: 1px solid rgba(109, 68, 32, 0.16);
+  border-radius: 28px;
+  box-shadow: 0 20px 36px rgba(66, 36, 15, 0.12);
+  padding: 1.2rem;
+}
+
+.login-intro {
+  border-radius: 20px;
+  padding: 1.1rem;
+  background: linear-gradient(165deg, rgba(90, 45, 17, 0.94), rgba(122, 69, 36, 0.92));
+  color: #ffead4;
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+}
+
+.eyebrow {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f4cba5;
+  font-size: 0.76rem;
+  margin: 0;
+}
+
+.login-intro h1 {
+  margin: 0.4rem 0 0.75rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+}
+
+.login-intro p {
+  margin: 0;
+  color: rgba(255, 234, 212, 0.92);
+}
+
+.login-intro ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.45rem;
+  color: rgba(255, 234, 212, 0.9);
+}
+
+.login-form {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+  padding: 1rem;
+  background: #fffdf9;
+  border: 1px solid rgba(109, 68, 32, 0.12);
+  border-radius: 20px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+.login-form input {
+  width: 100%;
+  border: 1px solid #d8b28b;
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+  background: #fffdf9;
+}
+
+.login-form button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.9rem 1.2rem;
+  background: #5a2d11;
+  color: #ffe9ce;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.message.error {
+  margin: 0;
+  padding: 0.8rem 0.9rem;
+  border-radius: 14px;
+  background: #fde7e0;
+  color: #8a2d0c;
+}
+
+@media (max-width: 860px) {
+  .login-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .login-shell {
+    width: calc(100% - 1.25rem);
+  }
+
+  .login-card,
+  .login-intro,
+  .login-form {
+    border-radius: 18px;
+    padding: 0.9rem;
+  }
+}

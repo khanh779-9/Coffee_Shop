@@ -1,0 +1,145 @@
+<div class="app-shell">
+  <header class="topbar" [class.scrolled]="scrolled() || !onHome()">
+    <div class="topbar-inner">
+      <a class="brand" routerLink="/" aria-label="Coffee Shop Home">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 4c-2.8 1.8-4 5.2-2.7 8.3 1.3 3.1 4.7 4.8 7.8 4.1 2.2-.5 4.2-2.1 5.2-4.2"></path>
+            <path d="M16.5 3.5c2.4 1.2 3.9 3.8 3.6 6.6-.4 3.5-3.2 6.4-6.7 6.8"></path>
+            <path d="M10.2 7.2c1.1.8 1.5 2.3.8 3.5-.7 1.1-2.2 1.6-3.4 1"></path>
+          </svg>
+        </span>
+        <span class="brand-text">Coffee <em>Shop</em></span>
+      </a>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Mở menu"
+        aria-controls="mobile-nav-panel"
+        [attr.aria-expanded]="mobileNavOpen()"
+        (click)="toggleMobileNav()"
+      >
+        ☰
+      </button>
+      <nav class="nav-links">
+        <a href="#home-top" [class.is-active]="activeNav() === 'home'" (click)="goToSection($event, 'home-top', 'home')">Trang chủ</a>
+        <a href="#menu" class="nav-anchor" [class.is-active]="activeNav() === 'menu'" (click)="goToSection($event, 'menu', 'menu')">Thực đơn</a>
+        <a href="#about" class="nav-anchor" [class.is-active]="activeNav() === 'about'" (click)="goToSection($event, 'about', 'about')">Về chúng tôi</a>
+        <a href="#contact" class="nav-anchor" [class.is-active]="activeNav() === 'contact'" (click)="goToSection($event, 'contact', 'contact')">Liên hệ</a>
+      </nav>
+      <div class="header-actions">
+        <a class="order-link" routerLink="/order">Đặt hàng</a>
+        @if (authService.isAuthenticated()) {
+          <a class="admin-link" routerLink="/admin/orders">Đơn hàng</a>
+          <a class="admin-link" routerLink="/admin/content">Nội dung</a>
+        }
+        <a class="admin-link" routerLink="/admin/login">Admin</a>
+        <button
+          class="cart-button"
+          type="button"
+          aria-label="Giỏ hàng"
+          aria-controls="cart-sidebar"
+          [attr.aria-expanded]="cartService.isOpen()"
+          (click)="toggleCart()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="21" r="1"></circle>
+            <circle cx="19" cy="21" r="1"></circle>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+          </svg>
+          @if (cartService.totalCount() > 0) {
+            <span class="cart-badge">{{ cartService.totalCount() }}</span>
+          }
+        </button>
+        @if (authService.user(); as user) {
+          <div class="user-pill">{{ user.fullName }}</div>
+        }
+      </div>
+    </div>
+    <div class="mobile-nav-overlay" [class.is-open]="mobileNavOpen()" (click)="closeMobileNav()" aria-hidden="true"></div>
+    <div
+      id="mobile-nav-panel"
+      class="mobile-nav"
+      [class.is-open]="mobileNavOpen()"
+      role="navigation"
+      [attr.aria-hidden]="!mobileNavOpen()"
+    >
+      <nav class="mobile-nav-links">
+        <a href="#home-top" [class.is-active]="activeNav() === 'home'" [attr.tabindex]="mobileNavOpen() ? 0 : -1" (click)="goToSection($event, 'home-top', 'home')">Trang chủ</a>
+        <a href="#menu" [class.is-active]="activeNav() === 'menu'" [attr.tabindex]="mobileNavOpen() ? 0 : -1" (click)="goToSection($event, 'menu', 'menu')">Thực đơn</a>
+        <a href="#about" [class.is-active]="activeNav() === 'about'" [attr.tabindex]="mobileNavOpen() ? 0 : -1" (click)="goToSection($event, 'about', 'about')">Về chúng tôi</a>
+        <a href="#contact" [class.is-active]="activeNav() === 'contact'" [attr.tabindex]="mobileNavOpen() ? 0 : -1" (click)="goToSection($event, 'contact', 'contact')">Liên hệ</a>
+      </nav>
+
+      <div class="mobile-nav-actions">
+        <a class="order-link" routerLink="/order" [attr.tabindex]="mobileNavOpen() ? 0 : -1" (click)="closeMobileNav()">Đặt hàng</a>
+        @if (authService.isAuthenticated()) {
+          <a class="admin-link" routerLink="/admin/orders" [attr.tabindex]="mobileNavOpen() ? 0 : -1" (click)="closeMobileNav()">Đơn hàng</a>
+          <a class="admin-link" routerLink="/admin/content" [attr.tabindex]="mobileNavOpen() ? 0 : -1" (click)="closeMobileNav()">Nội dung</a>
+        }
+        <a class="admin-link" routerLink="/admin/login" [attr.tabindex]="mobileNavOpen() ? 0 : -1" (click)="closeMobileNav()">Admin</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <div class="cart-overlay" [class.is-open]="cartService.isOpen()" (click)="closeCart()" aria-hidden="true"></div>
+
+  <aside
+    id="cart-sidebar"
+    class="cart-sidebar"
+    [class.is-open]="cartService.isOpen()"
+    aria-label="Giỏ hàng"
+    role="dialog"
+    [attr.aria-modal]="cartService.isOpen()"
+    [attr.aria-hidden]="!cartService.isOpen()"
+  >
+    <header class="cart-header">
+      <h3>Giỏ hàng của bạn</h3>
+      <button type="button" class="cart-close" (click)="closeCart()" aria-label="Đóng giỏ hàng">×</button>
+    </header>
+
+    @if (cartService.lines().length === 0) {
+      <div class="cart-empty">
+        <p>Chưa có sản phẩm nào trong giỏ.</p>
+      </div>
+    } @else {
+      <div class="cart-list">
+        @for (line of cartService.lines(); track line.id) {
+          <article class="cart-item" [class.is-added]="cartService.lastAddedItemId() === line.id">
+            <img [src]="line.imageUrl" [alt]="line.name" />
+            <div class="cart-item-info">
+              <h4>{{ line.name }}</h4>
+              <p>{{ toCurrency(line.unitPrice) }}</p>
+              <div class="cart-qty">
+                <button type="button" [attr.tabindex]="cartService.isOpen() ? 0 : -1" (click)="cartService.decrease(line.id)">-</button>
+                <span>{{ line.quantity }}</span>
+                <button type="button" [attr.tabindex]="cartService.isOpen() ? 0 : -1" (click)="cartService.increase(line.id)">+</button>
+              </div>
+            </div>
+            <button class="cart-remove" type="button" [attr.tabindex]="cartService.isOpen() ? 0 : -1" (click)="cartService.remove(line.id)" aria-label="Xóa {{ line.name }} khỏi giỏ hàng">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 6h18"></path>
+                <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"></path>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                <path d="M10 11v6"></path>
+                <path d="M14 11v6"></path>
+              </svg>
+            </button>
+          </article>
+        }
+      </div>
+
+      <footer class="cart-footer">
+        <div class="cart-total">
+          <span>Tổng cộng</span>
+          <strong>{{ toCurrency(cartService.totalAmount()) }}</strong>
+        </div>
+        <a routerLink="/order" class="cart-checkout" [attr.tabindex]="cartService.isOpen() ? 0 : -1" (click)="closeCart()">Xem giỏ hàng / Đặt hàng</a>
+      </footer>
+    }
+  </aside>
+</div>
