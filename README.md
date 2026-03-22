@@ -82,3 +82,5 @@ Frontend .env is converted to a browser-safe file automatically before start/bui
 - /admin/login: admin login
 - /admin/orders: view orders and update status
 - /admin/content: manage hero, categories, and products
+
+https://roadmap.sh/projects/todo-list-api
